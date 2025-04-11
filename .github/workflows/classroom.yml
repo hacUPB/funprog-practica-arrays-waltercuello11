@@ -1,0 +1,130 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: build-test
+      id: build-test
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: build-test
+        setup-command: make clean
+        command: make
+        timeout: 10
+        max-score: 20
+    - name: test1
+      id: test1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test1
+        setup-command: make clean
+        command: make test-name NAME=test_calcSum
+        timeout: 10
+        max-score: 10
+    - name: test2
+      id: test2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test2
+        setup-command: make clean
+        command: make test-name NAME=test_findMax
+        timeout: 10
+        max-score: 10
+    - name: test3
+      id: test3
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test3
+        setup-command: make clean
+        command: make test-name NAME=test_calcAverage
+        timeout: 10
+        max-score: 10
+    - name: test4
+      id: test4
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test4
+        setup-command: make clean
+        command: make test-name NAME=test_countEvens
+        timeout: 10
+        max-score: 10
+    - name: test5
+      id: test5
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test5
+        setup-command: make clean
+        command: make test-name NAME=test_sumFirstLast
+        timeout: 10
+        max-score: 10
+    - name: test6
+      id: test6
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test6
+        setup-command: make clean
+        command: make test-name NAME=test_findMin
+        timeout: 10
+        max-score: 10
+    - name: test7
+      id: test7
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test7
+        setup-command: make clean
+        command: make test-name NAME=test_subtractArraysSum
+        timeout: 10
+        max-score: 10
+    - name: test8
+      id: test8
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test8
+        setup-command: make clean
+        command: make test-name NAME=test_mergeArraysSum
+        timeout: 10
+        max-score: 10
+    - name: test9
+      id: test9
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test9
+        setup-command: make clean
+        command: make test-name NAME=test_productArray
+        timeout: 10
+        max-score: 10
+    - name: test10
+      id: test10
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test10
+        setup-command: make clean
+        command: make test-name NAME=test_calcSumAverage
+        timeout: 10
+        max-score: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        BUILD-TEST_RESULTS: "${{steps.build-test.outputs.result}}"
+        TEST1_RESULTS: "${{steps.test1.outputs.result}}"
+        TEST2_RESULTS: "${{steps.test2.outputs.result}}"
+        TEST3_RESULTS: "${{steps.test3.outputs.result}}"
+        TEST4_RESULTS: "${{steps.test4.outputs.result}}"
+        TEST5_RESULTS: "${{steps.test5.outputs.result}}"
+        TEST6_RESULTS: "${{steps.test6.outputs.result}}"
+        TEST7_RESULTS: "${{steps.test7.outputs.result}}"
+        TEST8_RESULTS: "${{steps.test8.outputs.result}}"
+        TEST9_RESULTS: "${{steps.test9.outputs.result}}"
+        TEST10_RESULTS: "${{steps.test10.outputs.result}}"
+      with:
+        runners: build-test,test1,test2,test3,test4,test5,test6,test7,test8,test9,test10
